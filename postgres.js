@@ -1,7 +1,7 @@
 const Client = require('pg').Client
 
 const dbConfig = {
-	connectionString: 'postgresql://localhost:7000/trivia',
+	connectionString: 'postgresql://localhost:5432/trivia',
 }
 
 if(process.env.DATABASE_URL){
