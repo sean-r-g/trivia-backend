@@ -8,6 +8,12 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+    postgres.query(`SELECT * FROM questions WHERE id = ${req.params.id};`, (err, results) => {
+        res.json(results.rows)
+    });
+});
+
 router.post('/', (req, res) => {
     postgres.query(`INSERT INTO questions (category, question, answer, image) VALUES ('${req.body.category}', '${req.body.question}', '${req.body.answer}', '${req.body.image}')`, (err, results) => {
         postgres.query('SELECT * FROM questions ORDER BY id ASC;', (err, results) => {
