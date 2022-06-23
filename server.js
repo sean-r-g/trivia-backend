@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const postgres = require('./postgres.js');
 const triviaController = require('./controllers/trivia.js');
+const usersController = require('./controllers/users.js')
 const cors = require('cors')
 
 
@@ -10,6 +11,8 @@ app.use(express.static('public'))
 app.use(cors())
 
 app.use('/trivia', triviaController);
+app.use('/auth', usersController)
+
 
 postgres.connect();
 
