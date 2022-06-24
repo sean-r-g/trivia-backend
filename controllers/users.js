@@ -83,10 +83,14 @@ router.post('/login', async (req, res) =>{
     res.json({accessToken})
 })
 
+
+
 router.put(`/update`, (req, res) => {
-    postgres.query(`UPDATE users SET scores = array_prepend('${req.body.score}', scores) WHERE email = '${req.body.email}';`, (err, results)=>{
-        res.json(results.rows)
-    })
+    console.log(req.body);
+    console.log(score);
+    // postgres.query(`UPDATE users SET scores = array_prepend('${score}', scores) WHERE email = '${req.body.email}';`, (err, results)=>{
+    //     res.json(results.rows)
+    // })
 })
 
 module.exports = router
