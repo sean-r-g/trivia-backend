@@ -5,11 +5,13 @@ const bcrypt = require('bcrypt')
 const JWT = require('jsonwebtoken')
 const {check, validationResult} = require('express-validator')
 require('dotenv').config()
-// router.get('/', (req,res)=>{
-//     res.send({
-//         token: ''
-//     })
-// })
+
+
+router.get('/', (req,res)=>{
+    postgres.query(`SELECT * FROM users ORDER BY id ASC;`, (err, results)=>{
+        res.json(results.rows)
+    })
+})
 
 router.post('/signup', [
     check('email', 'Invalid email').isEmail(),
@@ -79,6 +81,10 @@ router.post('/login', async (req, res) =>{
         {expiresIn: '10m'}
     )
     res.json({accessToken})
+})
+
+router.put(`/:id`, (req, res) => {
+    postgres.query(`UPDATE users SET scores = array_prepend(${req.body.score}, scores) WHERE id = ${req.params.id};`)
 })
 
 module.exports = router

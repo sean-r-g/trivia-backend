@@ -11,7 +11,7 @@ app.use(express.static('public'))
 app.use(cors())
 
 app.use('/trivia', triviaController);
-app.use('/auth', usersController)
+app.use('/users', usersController)
 
 
 postgres.connect();
