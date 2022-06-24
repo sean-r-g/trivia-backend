@@ -84,7 +84,9 @@ router.post('/login', async (req, res) =>{
 })
 
 router.put(`/:id`, (req, res) => {
-    postgres.query(`UPDATE users SET scores = array_prepend(${req.body.score}, scores) WHERE id = ${req.params.id};`)
+    postgres.query(`UPDATE users SET scores = array_prepend('${req.body.score}', scores) WHERE id = ${req.params.id};`, (err, results)=>{
+        res.json(results.rows)
+    })
 })
 
 module.exports = router
