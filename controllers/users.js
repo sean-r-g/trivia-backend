@@ -13,6 +13,10 @@ router.get('/', (req,res)=>{
     })
 })
 
+router.get('/leaderboard', (req,res)=>{
+    postgres.query(`SELECT email, scores FROM users ORDER BY scores DESC;`)
+})
+
 router.post('/signup', [
     check('email', 'Invalid email').isEmail(),
     check('password', 'Password must be at least 6 characters long').isLength({min: 6})
