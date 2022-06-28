@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const postgres = require('../postgres.js');
 
-const randomid = () => {
-    
-}
 
 router.get('/', (req, res) => {
     postgres.query('SELECT * FROM questions ORDER BY id ASC;', (err, results) => {
