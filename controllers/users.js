@@ -63,7 +63,6 @@ router.post('/login', async (req, res) =>{
     const password = req.body.password
     let dbEmail = ''
     const getDbEmail = await postgres.query(`SELECT email FROM users WHERE email = '${email}';`)
-    console.log(getDbEmail.rows);
     if (getDbEmail.rows.length > 0) {
         dbEmail = getDbEmail.rows[0].email
     } else {
