@@ -13,9 +13,6 @@ router.get('/', (req,res)=>{
     })
 })
 
-// router.get('/leaderboard', (req,res)=>{
-//     postgres.query(`SELECT email, scores FROM users ORDER BY AVG(scores) DESC;`)
-// })
 
 router.post('/signup', [
     check('email', 'Invalid email').isEmail(),
