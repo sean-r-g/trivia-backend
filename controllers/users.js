@@ -13,9 +13,6 @@ router.get('/', (req,res)=>{
     })
 })
 
-// router.get('/leaderboard', (req,res)=>{
-//     postgres.query(`SELECT email, scores FROM users ORDER BY AVG(scores) DESC;`)
-// })
 
 router.post('/signup', [
     check('email', 'Invalid email').isEmail(),
@@ -61,24 +58,36 @@ router.post('/signup', [
 router.post('/login', async (req, res) =>{
     const email = req.body.email
     const password = req.body.password
-    // let user = postgres.query(`SELECT * FROM users WHERE email = '${email}';`)
-    // console.log(user);
-    // if (!user) {
-    //     return res.status(400).json({
-    //         errors: [{
-    //             msg: 'Invalid username or password'
-    //         }]
-    //     })
-    // }
-    let dbPassword = postgres.query(`SELECT password FROM users WHERE email = '${req.body.email}';`)
-    let isMatch = await bcrypt.compare(password, postgres.query(`SELECT password FROM users WHERE email = '${req.body.email}';`).toString())
-    // if (!isMatch) {
-    //     return res.status(401).json({
-    //         errors: [{
-    //             msg: 'Email or password is invalid'
-    //         }]
-    //     })
-    // }
+    let dbEmail = ''
+    const getDbEmail = await postgres.query(`SELECT email FROM users WHERE email = '${email}';`)
+    if (getDbEmail.rows.length > 0) {
+        dbEmail = getDbEmail.rows[0].email
+    } else {
+        return res.status(400).json({
+            errors: [{
+                msg: 'Invalid username or password'
+            }]
+        })
+    }
+    let dbPassword = ''
+    const getDbPassword = await postgres.query(`SELECT password FROM users WHERE email = '${email}';`)
+    if (getDbPassword.rows.length > 0) {
+        dbPassword = getDbPassword.rows[0].password
+    } else {
+        return res.status(401).json({
+            errors: [{
+                msg: 'Email or password is invalid'
+            }]
+        })
+    }
+    let isMatch = await bcrypt.compare(password, dbPassword)
+    if (!isMatch) {
+        return res.status(401).json({
+            errors: [{
+                msg: 'Email or password is invalid'
+            }]
+        })
+    }
     const accessToken = await JWT.sign(
         {email},
         process.env.ACCESS_TOKEN_SECRET,
